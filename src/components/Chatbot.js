@@ -7,7 +7,7 @@ import ChatbotResponse from './ChatbotResponse';
 import "./Chatbot.css"
 
 
-const Chatbot = ({ messages, setMessages, questions, placeholderValue, Themes, name, imagePreview, colorPicker, bubblePicker, position, autoshowTime, iconImage }) => {
+const Chatbot = ({ messages, setMessages, questions, placeholderValue, Themes, name, imagePreview, colorPicker, bubblePicker, position, autoshowTime, iconImage,chatinterface }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userInput1, setUserInput1] = useState('');
 
@@ -62,27 +62,31 @@ const Chatbot = ({ messages, setMessages, questions, placeholderValue, Themes, n
 
   };
 
-  // const reload = () => {
-  //   setMessages([
-  //     {
-  //       text: '👋 Hi! I am Talent Academy AI, ask me anything about Talent Academy!',
-  //       sender: 'Chatbot',
-  //     },
-  //   ]);
-  // };
+  const reload = () => {
+    setMessages([
+      {
+        text: '👋 Hi! I am Talent Academy AI, ask me anything about Talent Academy!',
+        sender: 'Chatbot',
+      },
+      {
+        text: 'Hii',
+        sender: 'User',
+      }
+    ]);
+  };
 
 
 
   return (
     <>
-      <div className={` flex flex-col w-[90%] gap-5 ml-auto rounded-xl mr-7 `}>
+      <div className={` flex flex-col w-[90%] gap-5 ml-auto rounded-xl mr-7 mb-7`}>
 
         <div className={`flex flex-col ${Themes === 'dark' ? 'bg-black' : 'bg-white'} gap-4 rounded-xl `}>
 
 
-          <div className=" rounded-[0.8rem] border border-solid border-gray-300 h-[500px] flex flex-col shadow-lg ">
+          <div className=" rounded-[0.8rem] border border-solid border-lime-500/25  h-[500px] flex flex-col shadow-lg ">
             {/* Refresh Part */}
-            <div className="refresh w-[98%] mx-auto mt-2 h-[8%] border-b border-solid border-gray-300 flex ">
+            <div className="refresh w-[98%] mx-auto mt-2 h-[8%] border-b border-solid border-lime-500/25  flex ">
               <div className='profile flex gap-[10px] items-center p-1'>
                 <div className='p-[2px] border border-solid border-gray-300 rounded-[50px] bg-purple-200  mb-[5px]'>
                   <img src={imagePreview} alt='profile' className='w-[30px] h-[30px] bg-white rounded-full ' />
@@ -90,8 +94,8 @@ const Chatbot = ({ messages, setMessages, questions, placeholderValue, Themes, n
                 <span className={`font-bold text-[16px] ${Themes === 'dark' ? 'text-gray-400' : ''}`}>{name}</span>
               </div>
               <div className='icon_div flex mt-auto mr-[10px] ml-auto mb-auto gap-[15px]'>
-                <FontAwesomeIcon key="2" className='icon cursor-pointer' icon={faArrowsRotate}  />
-                <FontAwesomeIcon key="1" className='icon cursor-pointer' icon={faXmark} />
+                <FontAwesomeIcon key="2" className='icon cursor-pointer text-lg' icon={faArrowsRotate}  onClick={chatinterface ? reload : null}   />
+                {!chatinterface &&<FontAwesomeIcon key="1" className='icon cursor-pointer text-lg' icon={faXmark} />}
 
               </div>
 
@@ -103,7 +107,7 @@ const Chatbot = ({ messages, setMessages, questions, placeholderValue, Themes, n
               {messages.map((message, ind) => (
                 message.text && (
                   <div className={`z-100 ${message.sender === 'User' ? 'justify-end flex' : ''}`} key={ind}>
-                    <div className={` m-[5px] p-[10px] min-w-[50px] max-w-[80%] text-left min-h-[20px] text-sm inline-block rounded-xl border-[2px] border-solid border-gray-300`} style={{
+                    <div className={` m-[5px] p-[10px] min-w-[50px] max-w-[80%] text-left min-h-[20px] text-sm inline-block rounded-xl border-[2px] border-solid border-lime-500/25`} style={{
                       backgroundColor: message.sender === 'User' ? colorPicker : '#E5E7EB',
                       color: message.sender === 'User' ? 'white' : 'black',
                     }} >
@@ -160,8 +164,8 @@ const Chatbot = ({ messages, setMessages, questions, placeholderValue, Themes, n
                       handleSubmit(e);
                     }
                   }}
-                  className='w-full cursor-not-allowed outline-none resize-none overflow-hidden min-h-10 rounded-full py-2 px-3 border-[2px] border-solid border-gray-300 transition-all duration-300 focus:border-blue-500'
-                  disabled />
+                  className={`w-full ${!chatinterface?'cursor-not-allowed':''} outline-none resize-none overflow-hidden min-h-10 rounded-full py-2 px-3 border-[2px] border-solid border-gray-300 transition-all duration-300 focus:border-blue-500`}
+                  disabled={!chatinterface}/>
 
 
 
@@ -176,9 +180,11 @@ const Chatbot = ({ messages, setMessages, questions, placeholderValue, Themes, n
 
           </div>
         </div>
+        {!chatinterface &&
         <div>
           <img src={iconImage} alt="chatlogo" className={` ${position === 'Right' ? 'ml-auto' : 'mr-auto'} mt-[-8px] w-[40px] h-[40px] rounded-full font-[60px] `} />
         </div>
+        }
       </div>
 
 

@@ -3,7 +3,7 @@ import Chatbot from "./Chatbot"
 import chatlogo from "../assets/chatlogo.png"
 import ImageCropper from './ImageCropper';
 
-function SubmitCaseForm() {
+const SubmitCaseForm=()=> {
   const [initialMessage, setinitialMessage] = useState('Hii What can I help you with');
   const [textArray, setTextArray] = useState([{
     text: 'Hii What can I help you with',
@@ -26,8 +26,10 @@ function SubmitCaseForm() {
   const [inputImg, setInputImg] = useState('')
   const [inputImg1, setInputImg1] = useState('');
   const imageref = useRef();
+  const [profileChecked,setprofileChecked]=useState(false);
   const [imagePreview, setImagePreview] = useState(chatlogo);
   const iconref = useRef();
+  const [iconCheck,seticonCheck]=useState(false);
   const [iconImage, seticonImage] = useState(chatlogo);
   const getBlob = (blob) => {
     setBlob(blob)
@@ -162,14 +164,6 @@ function SubmitCaseForm() {
       case 'bubblePicker':
         setbubblePicker('#FFC0CB');
         break;
-      case 'iconcheckbox':
-        seticonImage(chatlogo);
-        iconref.current.value = '';
-        break;
-      case 'profilecheckbox':
-        setImagePreview(chatlogo);
-        imageref.current.value = '';
-        break;
       default:
         break;
 
@@ -267,10 +261,31 @@ function SubmitCaseForm() {
     }
 
   };
+   const handleCheckboxChange = (event) => {
+   const { name } = event.target;
+    switch (name) {
+      case 'iconcheckbox':
+        seticonImage(chatlogo);
+        seticonCheck(prev=>!prev);
+        iconref.current.value = '';
+        break;
+      case 'profilecheckbox':
+        setImagePreview(chatlogo);
+        setprofileChecked(prev=>!prev);
+        imageref.current.value = '';
+        break;
+
+      default:
+        break;
+
+
+    }
+  };
+  
 
   return (
-    <div className='  w-[90%] border-[4px]  pt-4 rounded-md bg-white shadow-md my-3 mx-auto'>
-      <h2 className="text-xl font-bold mb-4 mx-3 h-10 border-b-2">Chat Interface</h2>
+    <div className='  w-[90%] border-[1px] border-lime-500/25 pt-4 rounded-md bg-white shadow-md my-3 mx-auto'>
+      <h2 className="text-xl font-semibold mb-4 mx-3 h-10 border-b-[1.5px] border-lime-500/25">Chat Interface</h2>
       <p className='ml-4 my-2'> Note: Applies when embedded on a website</p>
 
 
@@ -286,7 +301,7 @@ function SubmitCaseForm() {
                   <button
                     name="resetMessage"
                     type="button"
-                    className="bg-gray-500 text-white px-3  py-1 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:border-blue-300"
+                    className="bg-lime-800 text-white  px-3  py-1 rounded-md hover:bg-lime-900"
                     onClick={Reset}>
                     Reset
                   </button>
@@ -294,7 +309,7 @@ function SubmitCaseForm() {
                 <textarea
                   name='initialMessage'
                   rows="2"
-                  className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 text-gray-800 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full rounded-md border border-lime-500/25 shadow-sm px-3 py-2 text-gray-800 focus:outline-none focus:ring-lime-500/25 focus:border-lime-500/25"
                   value={initialMessage}
                   onChange={handleChange}
 
@@ -311,7 +326,7 @@ function SubmitCaseForm() {
                 <textarea
                   name='suggestedMessage'
                   rows="2"
-                  className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 text-gray-800 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full rounded-md border border-lime-500/25 shadow-sm px-3 py-2 text-gray-800 focus:outline-none focus:ring-lime-500/25 focus:border-lime-500/25"
                   placeholder='What is www.com'
                   value={suggestedMessage}
                   onChange={handleChange}
@@ -326,7 +341,7 @@ function SubmitCaseForm() {
 
                 <input
                   name='Message'
-                  className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 text-gray-800 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full rounded-md border border-lime-500/25 shadow-sm px-3 py-2 text-gray-800 focus:outline-none focus:ring-lime-500/25 focus:border-lime-500/25"
                   placeholder='Message'
                   value={Message}
                   onChange={handleChange}
@@ -341,7 +356,7 @@ function SubmitCaseForm() {
                 <select
 
                   name="Themes"
-                  className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 text-gray-800 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full rounded-md border border-lime-500/25 shadow-sm px-3 py-2 text-gray-800 focus:outline-none focus:ring-lime-500/25 focus:border-lime-500/25"
                   value={Themes}
                   onChange={handleChange}
 
@@ -361,7 +376,7 @@ function SubmitCaseForm() {
                   type="file"
 
                   name="profile"
-                  className='block border w-full mt-1 pl-5 border-gray-300 rounded-md py-[6px]'
+                  className='block border w-full mt-1 pl-5 border-lime-500/25 rounded-md py-[6px]'
                   onChange={handleChange}
                   ref={imageref}
                   accept="image/png, image/jpeg,image/jpg"
@@ -380,8 +395,10 @@ function SubmitCaseForm() {
               </div>
               <div className='flex  m-2 gap-3'>
 
-                <input className='cursor-pointer' type='checkbox'
-                  name="profilecheckbox" onClick={Reset} />
+                <input className='cursor-pointer w-4 border border-lime-500/25' type='checkbox' 
+                  name="profilecheckbox"
+                  
+                   onChange={handleCheckboxChange} checked={profileChecked} />
                 <label className="block text-sm mb-1 font-medium text-gray-700">
                   Remove Chatbot profile picture
                 </label>
@@ -395,7 +412,7 @@ function SubmitCaseForm() {
 
                 <input
                   name='name'
-                  className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 text-gray-800 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full rounded-md border border-lime-500/25 shadow-sm px-3 py-2 text-gray-800 focus:outline-none focus:ring-lime-500/25 focus:border-lime-500/25"
                   value={name}
                   onChange={handleChange}
                 />
@@ -410,7 +427,7 @@ function SubmitCaseForm() {
                     type="button"
                     name='colorPicker'
                     onClick={Reset}
-                    className="bg-gray-500 text-white px-3  py-1 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:border-blue-300"
+                    className="bg-lime-800 text-white  px-3  py-1 rounded-md hover:bg-lime-900 focus:outline-none focus:ring-lime-500/25 focus:border-lime-500/25"
                   >
                     Reset
                   </button>
@@ -436,7 +453,7 @@ function SubmitCaseForm() {
                 <input
                   type="file"
                   name="icon"
-                  className='  block border w-full mt-1 pl-5 border-gray-300 rounded-md py-[6px]'
+                  className='  block border w-full mt-1 pl-5 border-lime-500/25 rounded-md py-[6px]'
                   onChange={handleChange}
                   ref={iconref}
                 />
@@ -452,8 +469,8 @@ function SubmitCaseForm() {
               </div>
               <div className='flex  m-2 gap-3'>
 
-                <input type='checkbox' className='cursor-pointer'
-                  name="iconcheckbox" onClick={Reset} />
+                <input type='checkbox' className='cursor-pointer w-4 border border-lime-500/25'
+                  name="iconcheckbox" onChange={handleCheckboxChange} checked={iconCheck} />
                 <label htmlFor="affectedChatbots" className="block text-sm font-medium text-gray-700">
                   Remove Chat icon picture
                 </label>
@@ -467,7 +484,7 @@ function SubmitCaseForm() {
                     type="button"
                     name='bubblePicker'
                     onClick={Reset}
-                    className="bg-gray-500 text-white px-3  py-1 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:border-blue-300"
+                    className="bg-lime-800 text-white  px-3  py-1 rounded-md hover:bg-lime-900 focus:outline-none focus:ring-lime-500/25 focus:border-lime-500/25"
                   >
                     Reset
                   </button>
@@ -490,7 +507,7 @@ function SubmitCaseForm() {
                 <select
 
                   name="bubblePosition"
-                  className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 text-gray-800 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full rounded-md border border-lime-500/25 shadow-sm px-3 py-2 text-gray-800 focus:outline-none focus:ring-lime-500/25 focus:border-lime-500/25"
                   value={bubblePosition}
                   onChange={handleChange}
 
@@ -507,7 +524,7 @@ function SubmitCaseForm() {
                 <input
                   type="text"
                   name="autoshowTime"
-                  className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 text-gray-800 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full rounded-md border border-lime-500/25 shadow-sm px-3 py-2 text-gray-800 focus:outline-none focus:ring-lime-500/25 focus:border-lime-500/25"
                   value={autoshowTime}
                   onChange={handleChange}
                   required
@@ -524,7 +541,7 @@ function SubmitCaseForm() {
           </div>
 
           <div className='rightChatbot relative '>
-            <Chatbot messages={textArray} setMessages={setTextArray} questions={suggestedMessagearray} placeholderValue={Message} setplaceholderValue={setMessage} Themes={Themes} name={name} imagePreview={imagePreview} colorPicker={colorPicker} bubblePicker={bubblePicker} position={bubblePosition} autoshowTime={autoshowTime} iconImage={iconImage} />
+            <Chatbot messages={textArray} setMessages={setTextArray} questions={suggestedMessagearray} placeholderValue={Message} setplaceholderValue={setMessage} Themes={Themes} name={name} imagePreview={imagePreview} colorPicker={colorPicker} bubblePicker={bubblePicker} position={bubblePosition} autoshowTime={autoshowTime} iconImage={iconImage} chatinterface={false} />
           </div>
         </div>
 
@@ -537,7 +554,7 @@ function SubmitCaseForm() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="bg-black text-white px-4  py-2 mt-1 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:border-blue-300"
+              className="bg-lime-800 text-white  px-3  py-1 rounded-md hover:bg-lime-900 focus:outline-none focus:ring-lime-500/25 focus:border-lime-500/25"
             >
               Save
             </button>
